@@ -1,0 +1,35 @@
+# Compiled Go files
+*.o
+*.a
+*.exe
+*.test
+*.prof
+
+.env
+
+# Output directories
+/bin/
+/pkg/
+
+# Binary files
+*.bin
+*.dat
+*.sqlite
+*.db
+
+
+# Generated files
+/_test/
+/.idea/
+/.vscode/
+/.vscode-server/
+/.terraform/
+/_output/
+/vendor/
+
+# Ignore OS-specific temporary files
+.DS_Store
+Thumbs.db
+
+# Go executables and their generated files
+*.out
