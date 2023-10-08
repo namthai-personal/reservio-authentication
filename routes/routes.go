@@ -8,21 +8,24 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// SetupRouter configures the Gin router and defines the application routes.
 func SetupRouter() *gin.Engine {
 	// Initialize Gin router
 	router := gin.Default()
 
 	// Use middleware
-	router.Use(middlewares.LogRequestMiddleware())
+	router.Use(middlewares.TracerIDMiddleware())
 
-	// Routes
+	// Default Routes
 	router.GET("/", handlers.DefaultHandler)
+	router.GET("/healthcheck", handlers.Healthcheck)
 
-	// Define API routes
-	api := router.Group("/user")
+	// User api group
+	userApi := router.Group("/user")
 	{
-		api.GET("/", user.GetUser)
+		userApi.GET("/", user.ListUser)
+		userApi.GET("/:id", user.GetUserById)
+		userApi.POST("/", user.CreateUser)
+		userApi.POST("/login", user.Login)
 	}
 
 	return router

@@ -16,8 +16,6 @@ type Database struct {
 }
 type GormLogger struct{}
 
-var DB *gorm.DB
-
 func OpenDbConnection() *gorm.DB {
 
 	newLogger := logger.New(
@@ -52,3 +50,5 @@ func OpenDbConnection() *gorm.DB {
 func GetDb() *gorm.DB {
 	return DB
 }
+
+var DB *gorm.DB

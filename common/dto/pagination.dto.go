@@ -1,4 +1,4 @@
-package pagination
+package dto
 
 type Pagination struct {
 	PageSize int `json:"pageSize"`

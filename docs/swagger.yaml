@@ -1,0 +1,117 @@
+basePath: /
+definitions:
+  user.CreateUserDTO:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  user.LoginDTO:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  user.User:
+    properties:
+      createdAt:
+        type: string
+      createdBy:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      updatedAt:
+        type: string
+      updatedBy:
+        type: string
+      username:
+        type: string
+    type: object
+  user.UserPagination:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/user.User'
+        type: array
+      page:
+        type: integer
+    type: object
+info:
+  contact: {}
+  description: Reservio 2.0 Auth Service
+  title: Auth Service
+  version: 1.0.0
+paths:
+  /healthcheck:
+    get:
+      responses: {}
+      summary: Healthcheck
+      tags:
+      - Default API
+  /user:
+    post:
+      parameters:
+      - description: Create user input
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user.CreateUserDTO'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.User'
+      summary: Get single user by ID
+      tags:
+      - 'Internal :: User'
+  /user/:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserPagination'
+      summary: Get all users
+      tags:
+      - 'Internal :: User'
+  /user/{id}:
+    get:
+      parameters:
+      - description: Account ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.User'
+      summary: Get single user by ID
+      tags:
+      - 'Internal :: User'
+  /user/login:
+    post:
+      parameters:
+      - description: Login input
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user.LoginDTO'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: boolean
+      summary: Get single user by ID
+      tags:
+      - 'Internal :: Auth'
+swagger: "2.0"
