@@ -9,7 +9,9 @@ import (
 func TracerIDMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sessionId := uuid.New()
-		color.Cyan("Session: %s", sessionId)
+		d := color.New(color.BgCyan, color.Bold)
+		d.Print("Session:")
+		color.Cyan(" %s", sessionId)
 		if c.Request.Header.Get("x-tracer-id") == "" {
 			c.Header("x-tracer-id", sessionId.String())
 		}

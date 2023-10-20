@@ -47,6 +47,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/user.User"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/middlewares.GeneralError"
+                        }
                     }
                 }
             }
@@ -121,6 +127,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "middlewares.GeneralError": {
+            "type": "object",
+            "properties": {
+                "detaiil": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "user.CreateUserDTO": {
             "type": "object",
             "properties": {
@@ -143,6 +160,23 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "user.Pagination": {
+            "type": "object",
+            "properties": {
+                "page": {
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "type": "integer"
+                },
+                "totalCount": {
+                    "type": "integer"
+                },
+                "totalPage": {
+                    "type": "integer"
                 }
             }
         },
@@ -181,8 +215,8 @@ const docTemplate = `{
                         "$ref": "#/definitions/user.User"
                     }
                 },
-                "page": {
-                    "type": "integer"
+                "pagination": {
+                    "$ref": "#/definitions/user.Pagination"
                 }
             }
         }

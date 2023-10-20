@@ -18,7 +18,7 @@ const (
 type User struct {
 	ID        string    `json:"id" gorm:"primaryKey"`
 	Name      string    `json:"name"`
-	Username  string    `json:"username"`
+	Username  string    `json:"username" gorm:"uniqueIndex"`
 	Password  string    `json:"-"`
 	CreatedAt time.Time `json:"createdAt"`
 	CreatedBy string    `json:"createdBy"`
@@ -35,6 +35,7 @@ type UserRepo struct {
 }
 
 func NewUserRepo(db *gorm.DB) *UserRepo {
+
 	return &UserRepo{DB: db}
 }
 
@@ -54,6 +55,7 @@ func (repo *UserRepo) Get(id string) (User, error) {
 }
 
 func (repo *UserRepo) Create(props userDTO.CreateUserDTO) (User, error) {
+
 	createTime := time.Now()
 	user := User{
 		ID:       uuid.New().String(),
@@ -68,7 +70,6 @@ func (repo *UserRepo) Create(props userDTO.CreateUserDTO) (User, error) {
 	}
 
 	result := database.DB.Create(user)
-	color.Yellow("%d", result.RowsAffected)
 
 	return user, result.Error
 }

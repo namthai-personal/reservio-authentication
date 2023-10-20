@@ -68,15 +68,22 @@ func GetUserById(c *gin.Context) {
 //	@Router		/user [post]
 //
 // @Success 200 {object} User
+// @Failure 400 {object} middlewares.GeneralError
 func CreateUser(c *gin.Context) {
 	userBody := userDTO.CreateUserDTO{}
 	err := c.ShouldBindJSON(&userBody)
 
 	if err != nil {
-		c.JSON(500, "Server Error")
+		c.Error(err)
+		return
 	}
 
-	newUser, _ := userRepo.Create(userBody)
+	newUser, err := userRepo.Create(userBody)
+
+	if err != nil {
+		c.Error(err)
+		return
+	}
 
 	c.JSON(200, newUser)
 }
