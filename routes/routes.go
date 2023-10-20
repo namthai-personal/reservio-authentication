@@ -14,6 +14,8 @@ func SetupRouter() *gin.Engine {
 
 	// Use middleware
 	router.Use(middlewares.TracerIDMiddleware())
+	router.Use(middlewares.ErrorHandling())
+	router.Use(gin.Recovery())
 
 	// Default Routes
 	router.GET("/", handlers.DefaultHandler)

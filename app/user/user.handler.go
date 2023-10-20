@@ -6,9 +6,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type Pagination struct {
+	Page       int `json:"page"`
+	PageSize   int `json:"pageSize"`
+	TotalCount int `json:"totalCount"`
+	TotalPage  int `json:"totalPage"`
+}
+
 type UserPagination struct {
-	Items []User `json:"items"`
-	Page  int    `json:"page"`
+	Pagination Pagination `json:"pagination"`
+	Items      []User     `json:"items"`
 }
 
 var (
@@ -23,9 +30,13 @@ var (
 //
 // @Success 200 {object} UserPagination
 func ListUser(c *gin.Context) {
-	users, _ := userRepo.List()
+	users, e := userRepo.List()
 
-	c.JSON(200, UserPagination{users, 1})
+	if e != nil {
+		c.AbortWithError(500, e)
+		return
+	}
+	c.JSON(200, UserPagination{Pagination{1, 1, 1, 1}, users})
 }
 
 // GetUser godoc
@@ -39,7 +50,11 @@ func ListUser(c *gin.Context) {
 func GetUserById(c *gin.Context) {
 	id := c.Param("id")
 
-	user, _ := userRepo.Get(id)
+	user, e := userRepo.Get(id)
+	if e != nil {
+		c.AbortWithError(500, e)
+		return
+	}
 	c.JSON(200, user)
 }
 
@@ -54,7 +69,6 @@ func GetUserById(c *gin.Context) {
 //
 // @Success 200 {object} User
 func CreateUser(c *gin.Context) {
-	// jsonData, err := io.ReadAll(c.Request.Body)
 	userBody := userDTO.CreateUserDTO{}
 	err := c.ShouldBindJSON(&userBody)
 

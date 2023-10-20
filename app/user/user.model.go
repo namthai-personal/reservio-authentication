@@ -41,15 +41,16 @@ func NewUserRepo(db *gorm.DB) *UserRepo {
 func (repo *UserRepo) List() ([]User, error) {
 	users := []User{}
 
-	database.DB.Limit(QUERY_LIMIT).Order("created_at DESC").Find(&users)
-	return users, nil
+	result := database.DB.Limit(QUERY_LIMIT).Order("created_at DESC").Find(&users)
+
+	return users, result.Error
 }
 
 func (repo *UserRepo) Get(id string) (User, error) {
 	user := User{}
 	result := database.DB.Where("id = ?", id).First(&user)
 	color.Yellow("%d", result.RowsAffected)
-	return user, nil
+	return user, result.Error
 }
 
 func (repo *UserRepo) Create(props userDTO.CreateUserDTO) (User, error) {
@@ -69,7 +70,7 @@ func (repo *UserRepo) Create(props userDTO.CreateUserDTO) (User, error) {
 	result := database.DB.Create(user)
 	color.Yellow("%d", result.RowsAffected)
 
-	return user, nil
+	return user, result.Error
 }
 
 func (repo *UserRepo) Login(props userDTO.CreateUserDTO) (bool, error) {
@@ -80,5 +81,5 @@ func (repo *UserRepo) Login(props userDTO.CreateUserDTO) (bool, error) {
 		return false, result.Error
 	}
 
-	return true, nil
+	return true, result.Error
 }
